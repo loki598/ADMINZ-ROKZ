@@ -41,6 +41,9 @@ read -p  'OPTION:' option
 if [ $option = 1 ]
 	then apt-get update & apt-get -y install nano & apt-get -y install apache2
 	echo "${green} system updated ${normal}"
+	timedatectl list-timezones
+	read -p 'SELECT YOUR TIMEZONE' timezone
+	sudo timedatectl set-timezone $timezone
 	
 
 elif [ $option = 2 ] 
