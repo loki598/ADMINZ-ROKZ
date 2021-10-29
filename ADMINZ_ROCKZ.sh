@@ -39,7 +39,9 @@ printf "
 read -p  'OPTION:' option
 
 if [ $option = 1 ]
-	then apt-get update & apt-get -y install nano & apt-get -y install apache2 
+	then apt-get update & apt-get -y install nano & apt-get -y install apache2
+	echo "${green} system updated ${normal}"
+	
 
 elif [ $option = 2 ] 
 	then 
