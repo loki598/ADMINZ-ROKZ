@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-
+blue=$( tput setaf 4 );
 red=$( tput setaf 1 );
 yellow=$( tput setaf 3 );
 green=$( tput setaf 2 );
@@ -26,15 +26,47 @@ then
   exit
 fi
 
+if  ["$osName" != "CentOS Linux" ]
+        then
+        echo "${red}
+  I'm not sure what operating system you're running.
+  This script has only been tested for CentOS / Red Hat
+  and Ubuntu.
+  Please run it only on those operating systems.
+  ${normal}"
+        exit
+fi
 
-        printf "WELCOME TO SYZ ADMINZ PLEASE SELECT A OPTION\n"
+if  ["$osName" != "Red Hat Enterprise Linux" ]
+        then
+        echo "${red}
+  I'm not sure what operating system you're running.
+  This script has only been tested for CentOS / Red Hat
+  and Ubuntu.
+  Please run it only on those operating systems.
+  ${normal}"
+        exit
+fi
+if  ["$osName" != "Ubuntu" ]
+        then
+        echo "${red}
+  I'm not sure what operating system you're running.
+  This script has only been tested for CentOS / Red Hat
+  and Ubuntu.
+  Please run it only on those operating systems.
+  ${normal}"
+        exit
+fi
 
-printf "
+printf "${blue}WELCOME TO SYZ ADMINZ PLEASE SELECT A OPTION ${normal}\n"
+
+printf "${yellow}
 [1]BASIC SERVER CONFIGURATION
 
 [2]BASIC SECURITY CONFIGURATION
 
 [3]BASIC FIREWALL CONFIGURATION
+${normal}
 \n"
 
 read -p  'OPTION:' option
@@ -46,15 +78,17 @@ if [ $option = 1 ] && [ "$osName" == "Ubuntu" ]
         cat timezone.txt
         read -p 'SELECT YOUR TIMEZONE:' timezone
         timedatectl set-timezone $timezone
-        
-elif [ $option == 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
+        fi
+
+if [ $option = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
         then
         dnf update
         echo "${green} system updated ${normal}"
         cat timezone.txt
         read -p 'SELECT YOUR TIMEZONE:' timezone
         timedatectl set-timezone $timezone
-
+        echo "${green} TIMEZONE HAS BEEN SET SUCSESSFULLY ${normal}"
+        fi
 
 if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
         then
@@ -435,17 +469,5 @@ Description of what was done:
 6. Installed fail2ban and configured it to protect SSH.
 [note] For a default Ubuntu server installation, automatic security updates are enabled so no action was taken regarding updates.
 ${normal}"
-
-####################################################
-#  If Neither CentOS / Red Hat or Ubuntu is found  #
-####################################################
-
-else
-  echo "${red}
-  I'm not sure what operating system you're running.
-  This script has only been tested  CentOS / Red Hat
-  and Ubuntu.
-  Please run it only on those operating systems.
-  ${normal}"
-  exit
 fi
+
