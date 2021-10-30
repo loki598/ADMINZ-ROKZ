@@ -209,7 +209,7 @@ ${normal}"
 #          CentOS / Red Hat Section             #
 #################################################
 
-elif [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
+elif [ $option == 2 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
 then
 
   echo "${green}  You're running $osName. $osName security first
