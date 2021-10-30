@@ -39,13 +39,21 @@ printf "
 
 read -p  'OPTION:' option
 
-if [ $option = 1 ]
+if [ $option = 1 ] && [ "$osName" == "Ubuntu" ]
         then
+        apt update
         echo "${green} system updated ${normal}"
         cat timezone.txt
         read -p 'SELECT YOUR TIMEZONE:' timezone
         timedatectl set-timezone $timezone
-        fi
+        
+elif [ $option == 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
+        then
+        dnf update
+        echo "${green} system updated ${normal}"
+        cat timezone.txt
+        read -p 'SELECT YOUR TIMEZONE:' timezone
+        timedatectl set-timezone $timezone
 
 
 if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
