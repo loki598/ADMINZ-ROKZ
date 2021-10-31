@@ -140,7 +140,8 @@ if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
     (y or n):${normal} "
     read -r answer
     # Putting relevant lines in /etc/ssh/sshd_config.d/11-sshd-first-ten.conf file
-    if [ "$answer" == "y" ] || [ "$answer" == "Y" ] ;then
+    if [ "$answer" == "y" ] || [ "$answer" == "Y" ] ;
+    then
       echo "${yellow}
       Adding the following lines to a file in sshd_config.d
       ${normal}"
@@ -148,7 +149,7 @@ if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
 DisableForwarding yes
 PermitRootLogin no
 IgnoreRhosts yes
-PasswordAuthentication no" | sudo tee /etc/ssh/sshd_config
+PasswordAuthentication no" | sudo tee /etc/ssh/sshd_config.d/11-sshd-first-ten.conf 
       echo "${yellow}
       Reloading ssh
       ${normal}"
