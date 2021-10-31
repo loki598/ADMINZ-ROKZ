@@ -138,7 +138,7 @@ if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
     Are you sure you want to allow only key-based authentication for SSH?
     PASSWORD AUTHENTICATION WILL BE DISABLED FOR SSH ACCESS!
     (y or n):${normal} "
-    read -r answer
+    read -p  'y/n:' answer
     # Putting relevant lines in /etc/ssh/sshd_config.d/11-sshd-first-ten.conf file
     if [ "$answer" == "y" ] || [ "$answer" == "Y" ] ;
     then
