@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+cyan=$( tput setaf 6 );
 blue=$( tput setaf 4 );
 red=$( tput setaf 1 );
 yellow=$( tput setaf 3 );
@@ -26,46 +26,54 @@ then
   exit
 fi
 
-if  ["$osName" != "CentOS Linux" ]
-        then
-        echo "${red}
+if [ "$osName" != "Red Hat Enterprise Linux" ] && [ $osName != "CentOS Linux" ] || [ $osName != "Ubuntu" ];
+then
+
+  echo "${red}
   I'm not sure what operating system you're running.
   This script has only been tested for CentOS / Red Hat
   and Ubuntu.
   Please run it only on those operating systems.
   ${normal}"
-        exit
+exit
 fi
 
-if  ["$osName" != "Red Hat Enterprise Linux" ]
-        then
-        echo "${red}
-  I'm not sure what operating system you're running.
-  This script has only been tested for CentOS / Red Hat
-  and Ubuntu.
-  Please run it only on those operating systems.
-  ${normal}"
-        exit
-fi
-if  ["$osName" != "Ubuntu" ]
-        then
-        echo "${red}
-  I'm not sure what operating system you're running.
-  This script has only been tested for CentOS / Red Hat
-  and Ubuntu.
-  Please run it only on those operating systems.
-  ${normal}"
-        exit
-fi
 
-printf "${blue}WELCOME TO SYZ ADMINZ PLEASE SELECT A OPTION ${normal}\n"
+
+
+printf "${cyan}
+                   ##    #####   #    #     #    #    #  ######
+                  #  #   #    #  ##  ##     #    ##   #      #
+                 #    #  #    #  # ## #     #    # #  #     #
+                 ######  #    #  #    #     #    #  # #    #
+                 #    #  #    #  #    #     #    #   ##   #
+                 #    #  #####   #    #     #    #    #  ######
+
+
+                                                         #####    ####    ####   #    #  ######
+                                                         #    #  #    #  #    #  #   #       #
+                                                         #    #  #    #  #       ####       #
+                                                         #####   #    #  #       #  #      #
+                                                         #   #   #    #  #    #  #   #    #
+                                                         #    #   ####    ####   #    #  ######
+
+${normal}"
+
+
+
+
+
+
+
+
+printf "${blue}WELCOME TO ADMINZ ROCKZ PLEASE SELECT A OPTION ${normal}\n"
 
 printf "${yellow}
-[1]BASIC SERVER CONFIGURATION
+                                               [1]BASIC SERVER CONFIGURATION
 
-[2]BASIC SECURITY CONFIGURATION
+                                               [2]BASIC SECURITY CONFIGURATION
 
-[3]BASIC FIREWALL CONFIGURATION
+                                               [3]BASIC FIREWALL CONFIGURATION
 ${normal}
 \n"
 
@@ -149,7 +157,7 @@ if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
 DisableForwarding yes
 PermitRootLogin no
 IgnoreRhosts yes
-PasswordAuthentication no" | sudo tee /etc/ssh/sshd_config.d/11-sshd-first-ten.conf 
+PasswordAuthentication no" | sudo tee /etc/ssh/sshd_config.d/11-sshd-first-ten.conf
       echo "${yellow}
       Reloading ssh
       ${normal}"
@@ -470,5 +478,5 @@ Description of what was done:
 6. Installed fail2ban and configured it to protect SSH.
 [note] For a default Ubuntu server installation, automatic security updates are enabled so no action was taken regarding updates.
 ${normal}"
-fi
+        fi
 
