@@ -80,18 +80,18 @@ printf "${yellow}
 ${normal}
 \n"
 
-read -p  'OPTION:' option
+read -r  'OPTION:' option
 
-if [ $option = 1 ] && [ "$osName" == "Ubuntu" ]
+if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
         then
         apt update
         echo "${green} system updated ${normal}"
         cat timezone.txt
-        read -p 'SELECT YOUR TIMEZONE:' timezone
-        timedatectl set-timezone $timezone
+        read -r 'SELECT YOUR TIMEZONE:' timezone
+        timedatectl set-timezone "$timezone"
         fi
 
-if [ $option = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
+if [ "$option" = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
         then
         dnf update
         echo "${green} system updated ${normal}"
@@ -101,7 +101,7 @@ if [ $option = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat
         echo "${green} TIMEZONE HAS BEEN SET SUCSESSFULLY ${normal}"
         fi
 
-if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
+if [ "$option" == 2 ] && [ "$osName" == "Ubuntu" ]
         then
 # Determine OS name and store it in osName variable
 
@@ -149,7 +149,7 @@ if [ $option == 2 ] && [ "$osName" == "Ubuntu" ]
     Are you sure you want to allow only key-based authentication for SSH?
     PASSWORD AUTHENTICATION WILL BE DISABLED FOR SSH ACCESS!
     (y or n):${normal} "
-    read -p  'y/n:' answer
+    read -r  'y/n:' answer
     # Putting relevant lines in /etc/ssh/sshd_config.d/11-sshd-first-ten.conf file
     if [ "$answer" == "y" ] || [ "$answer" == "Y" ] ;
     then
@@ -263,7 +263,7 @@ ${normal}"
 #          CentOS / Red Hat Section             #
 #################################################
 
-elif [ $option == 2 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
+elif [ "$option" == 2 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
 then
 
   echo "${green}  You're running $osName. $osName security first
