@@ -97,7 +97,7 @@ if [ "$option" = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red H
         echo "${green} system updated ${normal}"
         cat timezone.txt
         read -p 'SELECT YOUR TIMEZONE:' timezone
-        timedatectl set-timezone $timezone
+        timedatectl set-timezone "$timezone"
         echo "${green} TIMEZONE HAS BEEN SET SUCSESSFULLY ${normal}"
         fi
 
