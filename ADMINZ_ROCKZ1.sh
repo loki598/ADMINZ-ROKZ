@@ -504,6 +504,12 @@ Description of what was done:
 [note] For a default Ubuntu server installation, automatic security updates are enabled so no action was taken regarding updates.
 ${normal}"
         fi
+if [ "$option" = 3 ]
+then
+ echo "${cyan}THANK YOU FOR USING ADMINZ ROCKZ HAVE NICE A DAY${normal}"
+break
+fi       
+
 if [ "$option" != 1 ] && [ "$option" != 2 ] && [ "$option" != 3 ]
         then
          echo "${red}INVALID INPUT ${normal}"
