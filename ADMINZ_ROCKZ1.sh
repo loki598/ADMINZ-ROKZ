@@ -25,7 +25,7 @@ then
   sleep 1
   exit
 fi
-
+#OS Detection
 if [[ "$osName" != "CentOS Linux" && ("$osName" != "Ubuntu" && "$osName" != "Red Hat Enterprise Linux") ]]
 
 then
@@ -66,10 +66,12 @@ ${normal}"
 
 
 
+ 
 
 
-
-
+##############################################
+#     FOR LOOP FOR MENU REPEATATION          #
+##############################################
 for (( ; ; ))
 do
 printf "${yellow}
@@ -90,7 +92,9 @@ printf "${yellow}
 ${normal}"
 
 read -p "OPTION:" option
-
+##############################################
+#     UBUNTU BASIC SERVER CONFIGURATION      #
+##############################################
 if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
         then
         apt update
@@ -100,6 +104,9 @@ if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
         timedatectl set-timezone "$timezone"
         fi
 
+##############################################
+#       CentOS / Red Hat Section             #
+##############################################
 if [ "$option" = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
         then
         dnf update
