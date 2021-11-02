@@ -69,25 +69,34 @@ ${normal}"
 
 
 
-printf "${blue}WELCOME TO ADMINZ ROCKZ PLEASE SELECT A OPTION ${normal}\n"
 
+for (( ; ; ))
+do
 printf "${yellow}
-                                               [1]BASIC SERVER CONFIGURATION
 
-                                               [2]BASIC SECURITY CONFIGURATION
 
-                                               [3]BASIC FIREWALL CONFIGURATION
-${normal}
-\n"
 
-read -r  'OPTION:' option
+__________________________________________________________________________   M A I N - M E N U____________________________________________________________________________________________
+${nornmal}\n"
+
+ printf "${cyan} WELCOME TO ADMINZ ROCKZ PLEASE SELECT A OPTION ${normal}"
+printf "${yellow}
+
+                                                                       [1]BASIC SERVER CONFIGURATION
+
+                                                                       [2]BASIC SECURITY CONFIGURATION
+
+                                                                       [3]BASIC FIREWALL CONFIGURATION
+${normal}"
+
+read -p "OPTION:" option
 
 if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
         then
         apt update
         echo "${green} system updated ${normal}"
         cat timezone.txt
-        read -r 'SELECT YOUR TIMEZONE:' timezone
+        read -p 'SELECT YOUR TIMEZONE:' timezone
         timedatectl set-timezone "$timezone"
         fi
 
@@ -482,5 +491,9 @@ Description of what was done:
 [note] For a default Ubuntu server installation, automatic security updates are enabled so no action was taken regarding updates.
 ${normal}"
         fi
-
+if [ "$option" != 1 ] && [ "$option" != 2 ] && [ "$option" != 3 ]
+        then
+         echo "${red}INVALID INPUT ${normal}"
+fi
+ done
 
