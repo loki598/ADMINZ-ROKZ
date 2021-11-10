@@ -226,11 +226,11 @@ UseSTARTTLS=YES" | sudo tee /etc/ssmtp/ssmtp.conf
 fi
    if [ "$y" == "n" ] || [ "$y" == "N" ]
    then
-  read  -p "ENTER YOUR DOMAIN NAME:" domain
+  read  -p "ENTER YOUR DOMAIN NAME INCLUDING TLD:" domain
   read -p "ENTER YOUR EMAIL ADDRESS FOR SSH NOTIFICATION:" email
   read -p "ENTER THE PASSWORD OF THE EMAIL:" password
 
-echo "mailhub=mail.$domain.com:587
+echo "mailhub=mail.$domain:587
 FromLineOverride=YES
 AuthUser=$email
 AuthPass=$password
