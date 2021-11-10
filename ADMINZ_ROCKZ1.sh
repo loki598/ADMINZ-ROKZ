@@ -203,6 +203,9 @@ then
 echo "${yellow} IF YOU ARE USING THIS TOOL FOR THE FIRST TIME PLEASE CHECK THE README FILE FOR EMAIL NOTIFICATIONS ESPECIALLY IF YOU ARE ADDING GMAIL ${normal}"
 sleep 2
 sudo apt-get install ssmtp -y
+sudo apt-get update -y
+sudo apt-get install mailutils -y
+
 echo "${yellow}
   Installing sSMTP for email notifications
   ${normal}"
@@ -233,7 +236,7 @@ AuthUser=$email
 AuthPass=$password
 UseSTARTTLS=YES" | sudo tee /etc/ssmtp/ssmtp.conf
 fi
- read -p "ENTER THE EMAIL WHERE YOU WANT TO GET THE NOTIFICATIONS" dstemail
+ read -p "ENTER THE EMAIL WHERE YOU WANT TO GET THE NOTIFICATIONS:" dstemail
 
   # Installing fail2ban and networking tools (includes netstat)
   echo "${yellow}
