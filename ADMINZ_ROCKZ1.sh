@@ -25,9 +25,8 @@ then
   sleep 1
   exit
 fi
-#OS Detection
-if [[ "$osName" != "CentOS Linux" && ("$osName" != "Ubuntu" && "$osName" != "Red Hat Enterprise Linux") ]]
 
+if [ "$osName" != "Red Hat Enterprise Linux" ] && [ "$osName" != "CentOS Linux" ] && [ "$osName" != "Ubuntu" ];
 then
 
   echo "${red}
@@ -42,13 +41,7 @@ fi
 
 
 
-
-
 printf "${cyan}
-
-_____________________________________________________________________________________________________________________________________________________________________________________________
-
-
                    ##    #####   #    #     #    #    #  ######
                   #  #   #    #  ##  ##     #    ##   #      #
                  #    #  #    #  # ## #     #    # #  #     #
@@ -64,8 +57,6 @@ ________________________________________________________________________________
                                                          #   #   #    #  #    #  #   #    #
                                                          #    #   ####    ####   #    #  ######
 
-
-_____________________________________________________________________________________________________________________________________________________________________________________________
 ${normal}"
 
 
@@ -75,32 +66,19 @@ ${normal}"
 
 
 
-##############################################
-#     FOR LOOP FOR MENU REPEATATION          #
-##############################################
-for (( ; ; ))
-do
+printf "${blue}WELCOME TO ADMINZ ROCKZ PLEASE SELECT A OPTION ${normal}\n"
+
 printf "${yellow}
+                                               [1]BASIC SERVER CONFIGURATION
 
+                                               [2]BASIC SECURITY CONFIGURATION
 
+                                               [3]BASIC FIREWALL CONFIGURATION
+${normal}
+\n"
 
-___________________________________________________________________________ M A I N - M E N U________________________________________________________________________________________________
-${nornmal}\n"
+read -p  'OPTION:' option
 
- printf "${cyan} WELCOME TO ADMINZ ROCKZ PLEASE SELECT A OPTION ${normal}"
-printf "${yellow}
-
-                                                                       [1]BASIC SERVER CONFIGURATION
-
-                                                                       [2]BASIC SECURITY CONFIGURATION
-
-                                                                       [3]EXIT
-${normal}"
-
-read -p "OPTION:" option
-##############################################
-#     UBUNTU BASIC SERVER CONFIGURATION      #
-##############################################
 if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
         then
         apt update
@@ -110,9 +88,6 @@ if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
         timedatectl set-timezone "$timezone"
         fi
 
-##############################################
-#       CentOS / Red Hat Section             #
-##############################################
 if [ "$option" = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
         then
         dnf update
@@ -171,7 +146,7 @@ if [ "$option" == 2 ] && [ "$osName" == "Ubuntu" ]
     Are you sure you want to allow only key-based authentication for SSH?
     PASSWORD AUTHENTICATION WILL BE DISABLED FOR SSH ACCESS!
     (y or n):${normal} "
-    read -r "y/n:" answer
+    read -p  'y/n:' answer
     # Putting relevant lines in /etc/ssh/sshd_config.d/11-sshd-first-ten.conf file
     if [ "$answer" == "y" ] || [ "$answer" == "Y" ] ;
     then
@@ -216,6 +191,50 @@ PasswordAuthentication no" | sudo tee /etc/ssh/sshd_config.d/11-sshd-first-ten.c
   #          Ubuntu fail2ban Section           #
   ##############################################
 
+echo "${yellow}
+  Do you want email notifications?
+  ${normal}"
+
+read -p "Y/N:" yes
+
+if [ "$yes" == "y" ] || [ "$yes" == "Y" ]
+then
+
+echo "${yellow} IF YOU ARE USING THIS TOOL FOR THE FIRST TIME PLEASE CHECK THE README FILE FOR EMAIL NOTIFICATIONS ESPECIALLY IF YOU ARE ADDING GMAIL ${normal}"
+sleep 2
+sudo apt-get install ssmtp -y
+echo "${yellow}
+  Installing sSMTP for email notifications
+  ${normal}"
+
+        fi
+
+  read -p  "are you gonna use GMAIL? Y/N:" y
+  if [ "$y" == "y" ] || [ "$y" == "Y" ]
+  then
+  read -p "YOUR GMAIL:" email
+  read -p "YOUR GMAIL PASSWORD:" password
+   
+   echo "mailhub=smtp.gmail.com:587
+AuthUser=$email
+AuthPass=$password
+FromLineOverride=YES
+UseSTARTTLS=YES" | sudo tee /etc/ssmtp/ssmtp.conf
+fi
+   if [ "$y" == "n" ] || [ "$y" == "N" ]
+   then
+  read  -p "ENTER YOUR DOMAIN NAME:" domain
+  read -p "ENTER YOUR EMAIL ADDRESS FOR SSH NOTIFICATION:" email
+  read -p "ENTER THE PASSWORD OF THE EMAIL:" password
+
+echo "mailhub=mail.$domain.com:587
+FromLineOverride=YES
+AuthUser=$email
+AuthPass=$password
+UseSTARTTLS=YES" | sudo tee /etc/ssmtp/ssmtp.conf
+fi
+ read -p "ENTER THE EMAIL WHERE YOU WANT TO GET THE NOTIFICATIONS" dstemail
+
   # Installing fail2ban and networking tools (includes netstat)
   echo "${yellow}
   Installing fail2ban and networking tools.
@@ -241,7 +260,10 @@ filter   = sshd
 logpath  = /var/log/auth.log
 maxretry = 5
 findtime = 43200
-bantime = 86400" | sudo tee /etc/fail2ban/jail.local
+bantime = 86400
+destemail = $dstemail
+mta = mail
+action = %(action_mwl)s" | sudo tee /etc/fail2ban/jail.local
   # Restarting fail2ban
   echo "${green}
   Restarting fail2ban
@@ -285,7 +307,7 @@ ${normal}"
 #          CentOS / Red Hat Section             #
 #################################################
 
-elif [ "$option" == 2 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red Hat Enterprise Linux" ]
+elif [ "$option" == 2 ] && [ "$osName" == "CentOS Linux" ] && [ "$osName" == "Red Hat Enterprise Linux" ]
 then
 
   echo "${green}  You're running $osName. $osName security first
@@ -504,16 +526,4 @@ Description of what was done:
 [note] For a default Ubuntu server installation, automatic security updates are enabled so no action was taken regarding updates.
 ${normal}"
         fi
-if [ "$option" = 3 ]
-then
- echo "${cyan}THANK YOU FOR USING ADMINZ ROCKZ HAVE NICE A DAY${normal}"
-break
-fi
-
-if [ "$option" != 1 ] && [ "$option" != 2 ] && [ "$option" != 3 ]
-        then
-         echo "${red}INVALID INPUT ${normal}"
-fi
- done
-
 
