@@ -13,13 +13,12 @@ LSB=/usr/bin/lsb_release
 # This verifies that a non-root user is configured and is being used to run
 # the script.
 
-if [ ${UID} == 0  ]
+if [ ${UID} != 0  ]
 then
   echo "${red}
-  You're running this script as root user.
-  Please configure a non-root user and run this
-  script as that non-root user.
-  Please do not start the script using sudo, but
+  You're running this script as non-root user.
+  Please use a root user or use sudo to run this
+  script as a root user.
   enter sudo privileges when prompted.
   ${normal}"
   #Pause so user can see output
@@ -40,6 +39,8 @@ exit
 fi
 
 
+for (( ; ; ))
+do
 
 
 printf "${cyan}
@@ -70,23 +71,59 @@ ${normal}"
 printf "${blue}WELCOME TO ADMINZ ROCKZ PLEASE SELECT A OPTION ${normal}\n"
 
 printf "${yellow}
-                                               [1]BASIC SERVER CONFIGURATION
+                                               [1]BASIC SERVER CONFIGURATION/INSTALL THE REQUIRED PACKAGES
 
                                                [2]BASIC SECURITY CONFIGURATION
 
-                                               [3]BASIC FIREWALL CONFIGURATION
+                                               [3]INFORMATION GRABBER
 
-                                               [4]INFORMATION GRABBER
+                                               [4]SECURITY AUDIT
 
-                                               [5]SECURITY AUDIT
+                                               [5]NETWORK/SERVER MONITORING
 
-
+                                               [6]EXIT
 ${normal}
 \n"
 
+
+
 read -p  'OPTION:' option
 
-if [ "$option" = 1 ] && [ "$osName" == "Ubuntu" ]
+if [ "${option}" = 6 ]
+        then
+        echo "${cyan} THANK YOU FOR USING THIS TOOL ${normal}"
+        break
+        fi
+
+
+if [ "${option}" == 5 ]
+
+then
+echo "${yellow} this option  will send an email to a specified email address when ping cannot reach its destination. System admin can execute this in script regularly with use of a cron sc>
+ The script first uses ping command to ping host or IP supplied as an argument.
+In case that destination is unreachable a mail command will be used to notify system administrator
+about this event.${normal}"
+
+read -p '${yellow} ENTER YOUR EMAIL WHERE YOU WANT TO RECIEVE NOTIFICATIIONS ${normal}' email1
+crontab -l > mycron
+echo "* */1 * * * for i in $@
+do
+ping -c 1 google.com &> /dev/null
+
+if [ $? -ne 0 ]; then
+        echo "`date`: ping failed, host is down!" | mail -s " host is down!" ${email1}
+fi
+done" >> mycron
+crontab mycron
+rm mycron
+fi
+
+
+
+
+
+
+if [ "$option" == 1 ] && [ "$osName" == "Ubuntu" ]
         then
         apt update
         echo "${green} system updated ${normal}"
@@ -106,6 +143,7 @@ if [ "$option" = 1 ] && [ "$osName" == "CentOS Linux" ] || [ "$osName" == "Red H
         fi
 
 if [ "$option" == 2 ] && [ "$osName" == "Ubuntu" ]
+
         then
 # Determine OS name and store it in osName variable
 
@@ -211,7 +249,7 @@ echo "${yellow} IF YOU ARE USING THIS TOOL FOR THE FIRST TIME PLEASE CHECK THE R
 sleep 2
 sudo apt-get install ssmtp -y
 sudo apt-get update -y
-sudo apt-get install mailutils -y
+sudo apt install mailutils -y
 
 echo "${yellow}
   Installing sSMTP for email notifications
@@ -537,7 +575,7 @@ Description of what was done:
 ${normal}"
         fi
 
-if [ "${option}" = 4 ]
+if [ "${option}" = 3 ]
 then
         echo "${yellow}                                  SYS INFO  ${normal}
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -598,7 +636,7 @@ fi
 
 
 
-if [ "${option}" = 5 ]
+if [ "${option}" = 4 ]
 then
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -1219,7 +1257,7 @@ if [ -e /etc/drbd.conf ]; then
     if [ "`grep shared-secret /etc/drbd.conf`" = "" ]; then
         echo "Warning: No shared-secret configured in /etc/drbd.conf.  There is no protection against malicious external DRBD packets which may cause data corruption on your DRBD disks.  Ensure that every disk is configured with a shared-secret attribute."; echo;
     fi
-fi
+
 
 
 #--------------------------------------------------------------------------------------------------------------
@@ -1241,3 +1279,8 @@ echo "System Checks Completed"
 
 fi
 
+else
+echo "WRONG INPUT"
+
+fi
+done
