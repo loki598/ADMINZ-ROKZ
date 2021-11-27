@@ -105,19 +105,50 @@ In case that destination is unreachable a mail command will be used to notify sy
 about this event.${normal}"
 
 read -p '${yellow} ENTER YOUR EMAIL WHERE YOU WANT TO RECIEVE NOTIFICATIIONS ${normal}' email1
-crontab -l > mycron
-echo "* */1 * * * for i in $@
-do
-ping -c 1 google.com &> /dev/null
+echo "#!/bin/bash
 
+LOG=/tmp/mylog.log
+SECONDS=60
+
+EMAIL=${email1}
+
+for i in $@; do
+        echo "$i-UP!" > $LOG.$i
+
+done
+
+        for i in $@; do
+
+ping -c 1 $i > /dev/null
 if [ $? -ne 0 ]; then
-        echo "`date`: ping failed, host is down!" | mail -s " host is down!" ${email1}
+        STATUS=$(cat $LOG.$i)
+                if [ $STATUS != "$i-DOWN!" ]; then
+                        echo "`date`: ping failed, server is down!" |
+                        mail -s "server host is down!" $EMAIL
+
+                fi
+        echo "$i-DOWN!" > $LOG.$i
+
+else
+        STATUS=$(cat $LOG.$i)
+                if [ $STATUS != "$i-UP!" ]; then
+                        echo "`date`: ping OK, SERVER host is up!" |
+                        mail -s "SERVER host is up!" $EMAIL
+
+                fi
+        echo "$i-UP!" > $LOG.$i
 fi
-done" >> mycron
+done
+sleep $SECONDS"  >> serverup.sh
+chmod +x serverup.sh
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 * * * * /serverup.sh google.com" >> mycron
+#install new cron file
 crontab mycron
 rm mycron
+echo "${green} CONFIGURATION COMPLETE :) ${normal}"
 fi
-
 
 
 
